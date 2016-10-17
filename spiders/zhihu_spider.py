@@ -36,8 +36,8 @@ class ZhihuSpider(scrapy.Spider):
         captcha = raw_input()
         form = {
                         '_xsrf': xsrf,
-                        'account': 'ousyuyou@163.com',
-                        'password': '791227',
+                        'account': 'xxxx',
+                        'password': 'xxx',
                         'captcha': captcha
                     }
                     
