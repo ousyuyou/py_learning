@@ -189,7 +189,8 @@ def getColor():
     cv2.waitKey(0)  
     cv2.destroyAllWindows()
 
-def outputContour(origin_image,out_image_name):    
+def outputContour(origin_image,out_image_name):  
+    print 'start convert: ' + origin_image
     image = cv2.imread(origin_image,0)
     #cv2.imshow("origin",image)
 
@@ -205,7 +206,7 @@ def outputContour(origin_image,out_image_name):
     #反色，即对二值图每个像素取反
     #result = cv2.bitwise_not(result);
     #显示图像
-    cv2.imshow("threshold",result);
+    #cv2.imshow("threshold",result);
     #CHAIN_APPROX_NONE,CV_CHAIN_APPROX_SIMPLE,CV_CHAIN_APPROX_TC89_L1
     image2, contours, hierarchy = cv2.findContours(result,cv2.RETR_TREE,cv2.CHAIN_APPROX_NONE)
     count = 0;
@@ -222,11 +223,24 @@ def outputContour(origin_image,out_image_name):
                         f.write(str(y[i,0])+','+str(110-y[i,1])+'\n')
         count = count + 1
         
-    img = cv2.drawContours(dilate, contours, -1, (0,255,0), 3)
-    cv2.imshow("img", img)
+    #img = cv2.drawContours(dilate, contours, -1, (0,255,0), 3)
+    #cv2.imshow("img", img)
     
-    cv2.waitKey(0)  
-    cv2.destroyAllWindows()
+    #cv2.waitKey(0)  
+    #cv2.destroyAllWindows()
+    print 'end convert: ' + origin_image
     
-outputContour('pic/code_lu_cut0.jpg','target_n_contours.dat')
+#outputContour('pic/code_lu_cut0.jpg','target_n_contours.dat')
 #outputContour('pic/standard/N.jpg','standard_n_contours.dat')
+def outputStandardContours():
+    pic_path = 'D:/py_learning/pic/standard/'
+    contours_path = 'D:/py_learning/pic/contours/standard/'
+    for filename in os.listdir(pic_path):
+        pic_file = pic_path + filename
+        filename_noextension = os.path.splitext(filename)[0]
+        contour_file = contours_path + filename_noextension + '_contours.dat'
+        outputContour(pic_file,contour_file)
+
+outputStandardContours()
+
+        
