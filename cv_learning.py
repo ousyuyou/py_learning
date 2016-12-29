@@ -241,6 +241,59 @@ def outputStandardContours():
         contour_file = contours_path + filename_noextension + '_contours.dat'
         outputContour(pic_file,contour_file)
 
-outputStandardContours()
+def match_shape(pic1,pic2):  
+    print 'start '
+    image1 = cv2.imread(pic1,0)
+    #cv2.imshow("origin",image)
 
-        
+    #构造一个5x5,or 7×7的结构元素   
+    element = cv2.getStructuringElement(cv2.MORPH_RECT,(3, 3))  
+    dilate = cv2.dilate(image1, element) 
+    #cv2.imshow("first dilate",dilate)  
+    
+    element2 = cv2.getStructuringElement(cv2.MORPH_RECT,(7, 7))  
+    erode = cv2.erode(dilate, element2)
+    #cv2.imshow("next erode",erode)
+    retval, result = cv2.threshold(erode, 180, 255, cv2.THRESH_BINARY);   
+    #反色，即对二值图每个像素取反
+    #result = cv2.bitwise_not(result);
+    #显示图像
+    #cv2.imshow("threshold",result);
+    #CHAIN_APPROX_NONE,CV_CHAIN_APPROX_SIMPLE,CV_CHAIN_APPROX_TC89_L1
+    image, contours1, hierarchy = cv2.findContours(result,cv2.RETR_TREE,cv2.CHAIN_APPROX_NONE)
+    
+    img = cv2.drawContours(dilate, contours1, 1, (0,255,0), 3)
+    cv2.imshow("img", img)
+    print contours1[1].shape
+    
+    image2 = cv2.imread(pic2,0)
+    #cv2.imshow("origin",image)
+
+    #构造一个5x5,or 7×7的结构元素   
+    dilate = cv2.dilate(image2, element) 
+    #cv2.imshow("first dilate",dilate)  
+    
+    erode = cv2.erode(dilate, element2)
+    #cv2.imshow("next erode",erode)
+    retval, result = cv2.threshold(erode, 180, 255, cv2.THRESH_BINARY);   
+    #反色，即对二值图每个像素取反
+    #result = cv2.bitwise_not(result);
+    #显示图像
+    #cv2.imshow("threshold",result);
+    #CHAIN_APPROX_NONE,CV_CHAIN_APPROX_SIMPLE,CV_CHAIN_APPROX_TC89_L1
+    image, contours2, hierarchy = cv2.findContours(result,cv2.RETR_TREE,cv2.CHAIN_APPROX_NONE)
+    
+    #img = cv2.drawContours(dilate, contours2, -1, (0,255,0), 3)
+    #cv2.imshow("img", img)
+    print contours2[1].shape
+    
+    ret = cv2.matchShapes(contours1[1],contours2[1],1,0.0)
+    print ret
+    
+    cv2.waitKey(0)  
+    cv2.destroyAllWindows()
+    print 'end'
+    
+#outputStandardContours()
+#outputContour('pic/targent_n.jpg','targent_n_contour.dat')    
+#match_shape('pic/targent_n.jpg','pic/standard/1.jpg')
