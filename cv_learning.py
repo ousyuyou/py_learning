@@ -293,7 +293,44 @@ def match_shape(pic1,pic2):
     cv2.waitKey(0)  
     cv2.destroyAllWindows()
     print 'end'
+
+'''
+compare the given pic's contour with all standard's pic's contours
+'''
+def get_shape_context_costs(pic1):
+    standard_pics_path = 'D:/py_learning/pic/standard/'#to list filename
+    standard_contours_path = 'D:/shape_context_demo/contours/standard/'
+    target_contour_save_path = 'D:/shape_context_demo/contours/'
     
+    filename_noextension = os.path.splitext(os.path.basename(pic1))[0]
+    #print 'filename_noextension '+filename_noextension
+    target_contour_save_name = target_contour_save_path + 'target_' + filename_noextension + '_contour.dat'
+    #print 'target_contour_save_name '+target_contour_save_name
+    outputContour(pic1,target_contour_save_name)
+    #begin list standard pic's file name
+    for filename in os.listdir(standard_pics_path):
+        filename_noextension = os.path.splitext(filename)[0]
+        standard_contour_file = standard_contours_path + filename_noextension + '_contours.dat'
+        write_octave_path_file(target_contour_save_name,standard_contour_file)
+        os.system('octave.bat')
+        #call octave to calculate
+        #os.system    
+
+def write_octave_path_file(target_contours_path,standard_contours_path):
+    file_name = 'D:/shape_context_demo/filenames_save-text.txt'
+    with open(file_name, 'wb') as f:
+            f.write('# name: target_contours_path\n')
+            f.write('# type: sq_string\n')
+            f.write('# elements: 1\n')
+            f.write('# length: '+str(len(target_contours_path))+'\n')
+            f.write(target_contours_path+'\n')
+            f.write('# name: standard_contours_path\n')
+            f.write('# type: sq_string\n')
+            f.write('# elements: 1\n')
+            f.write('# length: '+str(len(standard_contours_path))+'\n')
+            f.write(standard_contours_path+'\n')
+
+get_shape_context_costs('pic/target_n.jpg')
 #outputStandardContours()
-#outputContour('pic/targent_n.jpg','targent_n_contour.dat')    
+#outputContour('pic/targent_n.jpg','targent_n_contour.dat')
 #match_shape('pic/targent_n.jpg','pic/standard/1.jpg')
