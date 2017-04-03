@@ -314,7 +314,7 @@ def get_shape_context_costs(pic1):
         write_octave_path_file(target_contour_save_name,standard_contour_file)
         os.system('octave.bat')
         #call octave to calculate
-        #os.system    
+        #os.system
 
 def write_octave_path_file(target_contours_path,standard_contours_path):
     file_name = 'D:/shape_context_demo/filenames_save-text.txt'
@@ -333,4 +333,4 @@ def write_octave_path_file(target_contours_path,standard_contours_path):
 get_shape_context_costs('pic/target_n.jpg')
 #outputStandardContours()
 #outputContour('pic/targent_n.jpg','targent_n_contour.dat')
-#match_shape('pic/targent_n.jpg','pic/standard/1.jpg')
+#match_shape('pic/targent_n.jpg','pic/standard/N.jpg')
